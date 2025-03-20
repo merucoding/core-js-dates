@@ -167,10 +167,18 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
-}
+function getCountWeekendsInMonth(month, year) {
+  const curMonth = new Date(Date.UTC(year, month - 1));
+  const nextMonth = new Date(Date.UTC(year, month));
+  const diff = (nextMonth - curMonth) / 86400000;
+  let count = 0;
 
+  for (let i = 1; i <= diff; i += 1) {
+    const day = new Date(curMonth.setDate(i)).getDay();
+    if (day === 0 || day === 6) count += 1;
+  }
+  return count;
+}
 /**
  * Returns the week number of the year for a given date.
  * The first week of the year is defined according to ISO8601.
